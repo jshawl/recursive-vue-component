@@ -9,12 +9,24 @@
     </div>
     <script type='x-template' id='tree'>
       <div>
-        Hello
+        <div v-for="file in files">
+          {{file.name}}<span v-if="file.tag == 'folder'">/</span>
+        </div>
       </div>
     </script>
     <script>
+      let files = [
+        {tag: 'folder', name: 'dir1'},
+        {tag: 'folder', name: 'dir2'},
+        {tag: 'file', name: 'file1'}
+      ]
       Vue.component('tree',{
-        template: '#tree'
+        template: '#tree',
+        data(){
+          return {
+            files
+          }
+        }
       })
       new Vue({
         el: '#app'
