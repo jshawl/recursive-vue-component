@@ -10,13 +10,16 @@
     <script type='x-template' id='tree'>
       <div>
 	<div v-for="file in files">
-	  <div v-if="file.tag == 'folder'" v-on:click='toggleExpand()'>
-	    {{file.name}}/
-	  </div>
+	  <folder v-if="file.tag == 'folder'" :file='file'></folder>
 	  <div v-else>
 	    {{file.name}}
 	  </div>
 	</div>
+      </div>
+    </script>
+    <script type="x-template" id='folder'>
+      <div v-on:click="toggleExpand()">
+        {{file.name}}/
       </div>
     </script>
     <script>
@@ -27,14 +30,18 @@
       ]
       Vue.component('tree',{
         template: '#tree',
-        methods: {
-          toggleExpand: function(){
-            console.log('togglin!')
-          }
-        },
         data(){
           return {
             files
+          }
+        }
+      })
+      Vue.component('folder',{
+        template: '#folder',
+        props: ['file'],
+        methods: {
+          toggleExpand: function(){
+            console.log('togglin!')
           }
         }
       })
