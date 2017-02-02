@@ -20,6 +20,7 @@
     <script type="x-template" id='folder'>
       <div v-on:click="toggleExpand()">
         {{file.name}}/
+        <span v-if='isOpen'>show children</span>
       </div>
     </script>
     <script>
@@ -41,7 +42,12 @@
         props: ['file'],
         methods: {
           toggleExpand: function(){
-            console.log('togglin!')
+            this.isOpen = !this.isOpen
+          }
+        },
+        data: function(){
+          return {
+            isOpen: false
           }
         }
       })
