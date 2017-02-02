@@ -2,34 +2,65 @@
 <html>
   <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+    <style>
+      .folder, .file{
+        position:relative;
+        padding: 3px 12px;
+        cursor: pointer;
+      }
+      .folder:before{
+        content:'';
+        display:block;
+        border: 5px solid black;
+        border-color: transparent transparent transparent #000;
+        position:absolute;
+        left:0;
+        top:0%;
+        width:0;
+        transition: all .2s ease;
+        transform: translateY(75%);
+      }
+      .folder.active:before{
+        border-color:#000 transparent transparent transparent;
+      }
+      .folder > .tree{
+        padding: 0;
+      }
+    </style>
   </head>
   <body>
     <div id='app'>
       <tree></tree>
     </div>
     <script type='x-template' id='tree'>
-      <div>
+      <div class='tree'>
 	<div v-for="file in files">
 	  <folder v-if="file.tag == 'folder'" :file='file'></folder>
-	  <div v-else>
+	  <div v-else class='file'>
 	    {{file.name}}
 	  </div>
 	</div>
       </div>
     </script>
     <script type="x-template" id='folder'>
-      <div>
+      <div class='folder' v-bind:class="{ active: isOpen }">
         <div v-on:click="toggleExpand()">
           {{file.name}}/
+          <small v-if="isOpen && !file.files">(empty)</small>
         </div>
         <tree v-if='isOpen && file.files' :children='file.files'></tree>
+
       </div>
     </script>
     <script>
       let files = [
         {tag: 'folder', name: 'dir1', files: [
           {tag: 'file', name: 'fileA'},
-          {tag: 'file', name: 'fileB'}
+          {tag: 'file', name: 'fileB'},
+          {tag: 'folder', name: 'dir1a', files: [
+            {tag: 'file', name: 'fileAA'},
+            {tag: 'file', name: 'fileBB'}
+          ]}
         ]},
         {tag: 'folder', name: 'dir2'},
         {tag: 'file', name: 'file1'}
