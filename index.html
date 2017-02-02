@@ -18,22 +18,28 @@
       </div>
     </script>
     <script type="x-template" id='folder'>
-      <div v-on:click="toggleExpand()">
-        {{file.name}}/
-        <span v-if='isOpen'>show children</span>
+      <div>
+        <div v-on:click="toggleExpand()">
+          {{file.name}}/
+        </div>
+        <tree v-if='isOpen && file.files' :children='file.files'></tree>
       </div>
     </script>
     <script>
       let files = [
-        {tag: 'folder', name: 'dir1'},
+        {tag: 'folder', name: 'dir1', files: [
+          {tag: 'file', name: 'fileA'},
+          {tag: 'file', name: 'fileB'}
+        ]},
         {tag: 'folder', name: 'dir2'},
         {tag: 'file', name: 'file1'}
       ]
       Vue.component('tree',{
         template: '#tree',
+        props: ['children'],
         data(){
           return {
-            files
+            files: this.children || files
           }
         }
       })
